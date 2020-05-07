@@ -5,7 +5,8 @@ import {
   Person,
   ExitToApp,
   Dashboard,
-  Book
+  Book,
+  Lock
 } from "@material-ui/icons";
 import { Link, withRouter } from "react-router-dom";
 import { removeFromStorage, getFromStorage } from "../../../utils/storage";
@@ -83,6 +84,15 @@ class Sidebar extends Component {
             <li>
               <QuestionAnswer />
               <span> Quiz</span>
+            </li>
+          </Link>
+          <Link
+            to="/AdminSecretKey"
+            style={{ textDecoration: "none", color: "white" }}
+          >
+            <li>
+              <Lock />
+              <span> Key</span>
             </li>
           </Link>
           <Link

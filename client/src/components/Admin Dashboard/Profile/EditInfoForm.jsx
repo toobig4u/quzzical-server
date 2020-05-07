@@ -4,6 +4,7 @@ import { Alert } from "react-bootstrap";
 import { getFromStorage } from "../../../utils/storage";
 import { withRouter } from "react-router";
 import { CircularProgress } from "@material-ui/core";
+import validator from "validator";
 
 class EditInfoForm extends Component {
   state = {
@@ -87,6 +88,8 @@ class EditInfoForm extends Component {
     if (getFromStorage(process.env.REACT_APP_TOKEN_KEY)) {
       if (this.state.name.trim() === "" || this.state.email.trim() === "") {
         this.setState({ requireError: "All Fields Required" });
+      } else if (!validator.isEmail(this.state.email)) {
+        this.setState({ emailError: "Please provide valid email" });
       } else if (this.nameError()) {
         this.setState({ isLoading: false }, () => {
           this.updatePostRequest();

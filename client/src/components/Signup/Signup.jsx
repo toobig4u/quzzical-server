@@ -21,7 +21,8 @@ class Signup extends Component {
     passwordEqualError: "",
     error: "",
     isLoggedIn: true,
-    isLoading: true
+    isLoading: true,
+    secretKey: ""
   };
 
   whenChangeHanlder = e => {
@@ -56,7 +57,9 @@ class Signup extends Component {
         this.state.name.trim() === "" ||
         this.state.email.trim() === "" ||
         this.state.password.trim() === "" ||
-        this.state.retypePassword.trim() === ""
+        this.state.retypePassword.trim() === "" ||
+        (this.state.secretKey.trim() === "" &&
+          window.location.pathname === "/AdminSignup")
       ) {
         this.setState({ requireError: "All Fields Required" });
       } else if (!validator.isEmail(this.state.email)) {
@@ -95,7 +98,7 @@ class Signup extends Component {
         }
         if (flag) {
           this.setState({ isLoading: false }, () => {
-            this.signupPostRequest();
+            this.checkOldsecretKey();
           });
         }
       }
@@ -117,7 +120,8 @@ class Signup extends Component {
       body: JSON.stringify({
         name: this.state.name,
         email: this.state.email,
-        password: this.state.password
+        password: this.state.password,
+        isAdmin: window.location.pathname === "/AdminSignup" ? true : false
       })
     })
       .then(res => res.json())
@@ -125,7 +129,11 @@ class Signup extends Component {
         this.setState({ isLoading: true }, () => {
           if (json.success) {
             setInStorage(process.env.REACT_APP_TOKEN_KEY, json.token);
-            this.props.history.replace("/Dashboard");
+            if (!json.profile.isAdmin) {
+              this.props.history.replace("/Dashboard");
+            } else {
+              this.props.history.replace("/AdminDashboard");
+            }
           } else {
             this.setState({ error: "Email Already Exists" });
           }
@@ -133,6 +141,32 @@ class Signup extends Component {
       })
       .catch(err => {
         this.setState({ error: "Email Already Exists", isLoading: true });
+      });
+  };
+
+  checkOldsecretKey = () => {
+    fetch(process.env.REACT_APP_OLD_KEY_API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        key: this.state.secretKey
+      })
+    })
+      .then(res => res.json())
+      .then(json => {
+        if (json.success) {
+          this.signupPostRequest();
+        } else {
+          this.setState({ error: "Secret Key Wrong", isLoading: true });
+        }
+      })
+      .catch(err => {
+        this.setState({
+          error: "Something went wrong",
+          isLoading: true
+        });
       });
   };
 
@@ -195,10 +229,14 @@ class Signup extends Component {
               {" "}
               {"<-"} Back To Login
             </Button>
-            <br />
-            <br />
+            {window.location.pathname !== "/AdminSignup" && (
+              <React.Fragment>
+                <br />
+                <br />
+              </React.Fragment>
+            )}
             <h2>Signup</h2>
-            <br />
+            {window.location.pathname !== "/AdminSignup" && <br />}
             {(this.state.requireError !== "" ||
               this.state.nameError !== "" ||
               this.state.emailError !== "" ||
@@ -262,7 +300,20 @@ class Signup extends Component {
                   style={{ width: "300px" }}
                 />
               </Form.Group>
-              <br />
+              {window.location.pathname === "/AdminSignup" && (
+                <Form.Group>
+                  <Form.Label>Secret Key:</Form.Label>
+                  <Form.Control
+                    type="password"
+                    name="secretKey"
+                    value={this.state.secretKey}
+                    onChange={this.whenChangeHanlder}
+                    placeholder="Secret Key*"
+                    style={{ width: "300px" }}
+                  />
+                </Form.Group>
+              )}
+              {window.location.pathname !== "/AdminSignup" && <br />}
               {this.state.isLoading ? (
                 <Form.Group>
                   <Button
