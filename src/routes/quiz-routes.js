@@ -50,7 +50,7 @@ routes.patch("/update/quiz", auth, async (req, res, next) => {
   const changedQuiz = req.body;
   const fieldsToUpdate = Object.keys(changedQuiz);
   const fieldsInModel = ["question", "answers", "region", "area", "difficulty"];
-  const isUpdateAllowed = fieldsToUpdate.every(field =>
+  const isUpdateAllowed = fieldsToUpdate.every((field) =>
     fieldsInModel.includes(field)
   );
   if (!isUpdateAllowed) {

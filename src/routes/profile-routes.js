@@ -35,7 +35,7 @@ routes.patch("/update/profiles", auth, async (req, res, next) => {
   const changedProfile = req.body;
   const fieldsToUpdate = Object.keys(changedProfile);
   const fieldsInModel = ["name", "email", "password"];
-  const isUpdateAllowed = fieldsToUpdate.every(field =>
+  const isUpdateAllowed = fieldsToUpdate.every((field) =>
     fieldsInModel.includes(field)
   );
   if (!isUpdateAllowed) {
@@ -83,7 +83,7 @@ routes.post("/profiles/login", async (req, res) => {
 routes.post("/profiles/logout", auth, async (req, res) => {
   try {
     const { profile, token } = req;
-    profile.tokens = profile.tokens.filter(t => t.token !== token);
+    profile.tokens = profile.tokens.filter((t) => t.token !== token);
     await profile.save();
     res.status(200).send({ profile, success: true });
   } catch (e) {

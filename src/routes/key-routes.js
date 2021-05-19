@@ -25,7 +25,7 @@ routes.patch("/update/key", async (req, res, next) => {
   const changedKey = req.body;
   const fieldsToUpdate = Object.keys(changedKey);
   const fieldsInModel = ["key"];
-  const isUpdateAllowed = fieldsToUpdate.every(field =>
+  const isUpdateAllowed = fieldsToUpdate.every((field) =>
     fieldsInModel.includes(field)
   );
   if (!isUpdateAllowed) {

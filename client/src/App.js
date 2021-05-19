@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import Login from "./components/Login/Login";
-import "./styles/style.css";
+// Styles
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./styles/style.css";
+import "tachyons";
+// Components
+import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import Dashboard from "./components/Admin Dashboard/Dashboard/Dashboard";
-import "tachyons";
 import Profile from "./components/Admin Dashboard/Profile/Profile";
 import Quiz from "./components/Admin Dashboard/Quiz/Quiz";
 import UserProfile from "./components/User Dashboard/Profile/Profile";
@@ -56,18 +58,15 @@ export default class App extends Component {
           <Route path="/" component={Login} exact />
           <Route path="/Login" component={Login} exact />
           <Route path="/Signup" component={Signup} exact />
-
           <Route path="/AdminSignup" component={Signup} exact />
           <Route path="/AdminDashboard" component={Dashboard} exact />
           <Route path="/AdminProfile" component={Profile} exact />
           <Route path="/AdminQuiz" component={Quiz} exact />
           <Route path="/AdminKnowledgeArea" component={Area} exact />
           <Route path="/AdminSecretKey" component={SecretKey} exact />
-
           <Route path="/Dashboard" component={UserDashboard} exact />
           <Route path="/Profile" component={UserProfile} exact />
           <Route path="/Quiz" component={UserQuiz} exact />
-
           <Route path="/" component={NotFound} />
         </Switch>
       </BrowserRouter>

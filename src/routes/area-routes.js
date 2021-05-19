@@ -33,7 +33,7 @@ routes.patch("/update/area", auth, async (req, res, next) => {
   const changedArea = req.body;
   const fieldsToUpdate = Object.keys(changedArea);
   const fieldsInModel = ["area"];
-  const isUpdateAllowed = fieldsToUpdate.every(field =>
+  const isUpdateAllowed = fieldsToUpdate.every((field) =>
     fieldsInModel.includes(field)
   );
   if (!isUpdateAllowed) {
