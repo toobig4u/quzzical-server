@@ -22,31 +22,31 @@ export default class App extends Component {
     fetch(process.env.REACT_APP_CREATE_KEY_API, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ key: process.env.REACT_APP_SECRET_KEY })
+      body: JSON.stringify({ key: process.env.REACT_APP_SECRET_KEY }),
     })
-      .then(res => res.json())
-      .then(json => {})
-      .catch(err => console.log(err));
+      .then((res) => res.json())
+      .then((json) => {})
+      .catch((err) => console.log(err));
   };
 
   checkSecretKey = () => {
     fetch(process.env.REACT_APP_GET_KEY_API, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     })
-      .then(res => res.json())
-      .then(json => {
+      .then((res) => res.json())
+      .then((json) => {
         if (json.success) {
           if (!json.key) {
             this.createSecretKey();
           }
         }
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   };
   componentDidMount() {
     this.checkSecretKey();
@@ -55,7 +55,10 @@ export default class App extends Component {
     return (
       <BrowserRouter>
         <Switch>
-          <Route path="/" component={Login} exact />
+          {/* Remove Commented code to enable signup */}
+          {/* <Route path="/" component={Login} exact /> */}
+          <Route path="/" component={Dashboard} exact />
+
           <Route path="/Login" component={Login} exact />
           <Route path="/Signup" component={Signup} exact />
           <Route path="/AdminSignup" component={Signup} exact />
